@@ -16,17 +16,30 @@
 		</nav>
 	</header>
     <main>
-        <section id="place-details">
-            <!-- Place details will be populated dynamically -->
+        <section class="place-details">
+			<div class="place-info">
+				<h2>Sunny Apartement</h2>
+				<p><strong>Host:</strong> Joelle Montegu</p>
+				<p><strong>Description:</strong> A beautiful, sea view apartement</p>
+				<p><strong>Price:</strong> $230/night</p>
+				<p><strong>Amenities:</strong> Wifi, Air conditioning, Kitchen, Parking</p>
+			</div>
         </section>
-        <section id="reviews">
-            <!-- Reviews will be populated dynamically -->
+        <section class="reviews">
+			<h3>Reviews</h3>
+
+			<div class="review-card">
+				<p><strong>Jane Smith</strong></p>
+				<p>⭐️⭐️⭐️⭐️⭐️</p>
+				<p>Amazing apartement, very clean</p>
+			</div>
         </section>
-        <section id="add-review">
+        <section class="add-review">
             <h2>Add a Review</h2>
-            <form id="review-form">
+			<a href="add_review.html" class="details-button">Add a Review</a>
+            <form class="form">
                 <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
+                <textarea class="review-text" name="review-text" required></textarea>
 
                 <button type="submit">Submit</button>
             </form>
@@ -34,7 +47,7 @@
     </main>
     <script src="scripts.js"></script>
 	<footer>
-		<p>All rights reserved - HBnB 2025</p>
+		<p>© 2025 All rights reserved</p>
 	</footer>
 </body>
 </html>
