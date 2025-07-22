@@ -34,7 +34,11 @@ main {
   	margin: 0 auto;
     padding: 2rem;
 }
-.place-card, .review-card, .place-details {
+footer {
+	background-color: #f7851a;
+	padding: 20px;
+}
+.place-card {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
@@ -85,4 +89,111 @@ h1 {
 }
 .login-button {
 	text-align: center;
+}
+.place-details h2 {
+	text-align: center;
+	font-size: 35px;
+}
+.place-info {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 220px;
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	font-size: 25px;
+}
+.place-details {
+	align-items: center;
+}
+.reviews h3 {
+	margin-left: 18px;
+}
+.review-text {
+	margin-top: 20px;
+}
+
+.review-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	width: 100%;
+	height: 220px;
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.review-card p {
+	margin: 5px;
+}
+.add-review {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+.add-review h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+form.form label {
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+#review-text {
+	border-radius: 8px;
+	width: 100%;
+	height: 50px;
+}
+#rating {
+	border-radius: 8px;
+	width: 100%;
+	height: 50px;
+}
+.add-review button{
+	width: 100%;
+	margin: 10px;
+}
+form.form button, .login-button, .button-review{
+    background-color: #f7851a;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+form label{
+	display: block;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+#email, #password {
+	width: 200px;
+	height: 25px;
+	border-radius: 8px;
+}
+.login-button, .button-review {
+	margin-top: 5px;
+}
+
+#review {
+	border-radius: 8px;
+	width: 100%;
+	height: 50px;
 }

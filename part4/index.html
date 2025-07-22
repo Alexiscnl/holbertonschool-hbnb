@@ -11,17 +11,16 @@
     <header>
 		<img src="images/logo.png" class="logo" alt="logo">
 		<nav>
-		  <a href="index.html">Home</a>
 		  <a href="login.html" class="login-button">Login</a>
 		</nav>
     </header>
     <main>
-		<h1>Available Place</h1>
+		<h1>Available Places</h1>
         <section id="filter">
 			<h3>Filter:</h3>
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
-                <!-- Options will be populated dynamically -->
+				<option value="all">All</option>
             </select>
         </section>
         <section id="places-list">
@@ -30,7 +29,7 @@
 				<p>Price: $230/night</p>
 				<a href="place.html" class="details-button">View Details</a>
 			</div>
-			  <div class="place-card">
+			<div class="place-card">
 				<h3>Cozy Cabin</h3>
 				<p>Price: $150/night</p>
 				<a href="place.html" class="details-button">View Details</a>

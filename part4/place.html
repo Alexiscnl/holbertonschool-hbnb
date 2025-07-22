@@ -1,53 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Place Details</title>
+	<head>
+	<meta charset="UTF-8" >
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Place Details</title>
 	<link rel="icon" href="images/icon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-	<header>
-		<img src="images/logo.png" class="logo" alt="logo">
-		<nav>
-		  <a href="index.html">Home</a>
-		  <a href="login.html" class="login-button">Login</a>
-		</nav>
-	</header>
-    <main>
-        <section class="place-details">
-			<div class="place-info">
-				<h2>Sunny Apartement</h2>
-				<p><strong>Host:</strong> Joelle Montegu</p>
-				<p><strong>Description:</strong> A beautiful, sea view apartement</p>
-				<p><strong>Price:</strong> $230/night</p>
-				<p><strong>Amenities:</strong> Wifi, Air conditioning, Kitchen, Parking</p>
-			</div>
-        </section>
-        <section class="reviews">
-			<h3>Reviews</h3>
+	<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<header>
+			<img src="images/logo.png" class="logo" alt="logo" >
+			<nav>
+			<a href="login.html" class="login-button">Login</a>
+			</nav>
+		</header>
 
-			<div class="review-card">
-				<p><strong>Jane Smith</strong></p>
-				<p>⭐️⭐️⭐️⭐️⭐️</p>
-				<p>Amazing apartement, very clean</p>
-			</div>
-        </section>
-        <section class="add-review">
-            <h2>Add a Review</h2>
-			<a href="add_review.html" class="details-button">Add a Review</a>
-            <form class="form">
-                <label for="review-text">Review:</label>
-                <textarea class="review-text" name="review-text" required></textarea>
+		<main>
+			<section class="place-details">
+				<h2>Sunny Apartment</h2>
+				<div class="place-info">
+					<p><strong>Host:</strong> Joelle Montegu</p>
+					<p><strong>Description:</strong> A beautiful, sea view apartment</p>
+					<p><strong>Price:</strong> $230/night</p>
+					<p><strong>Amenities:</strong> Wifi, Air conditioning, Kitchen, Parking</p>
+				</div>
+			</section>
 
-                <button type="submit">Submit</button>
-            </form>
-        </section>
-    </main>
-    <script src="scripts.js"></script>
-	<footer>
-		<p>© 2025 All rights reserved</p>
-	</footer>
-</body>
+			<section class="reviews">
+				<h3>Reviews</h3>
+				<div class="review-card">
+					<p><strong>Jane Smith:</strong></p>
+					<p>Amazing apartment, very clean</p>
+					<p>rating: ★★★★☆</p>
+				</div>
+			</section>
+
+			<section class="add-review" id="add-review">
+				<h2>Add a Review</h2>
+
+				<form class="form">
+					<label for="review-text">Your Review</label>
+					<textarea class="review-text" name="review-text" id="review-text" required></textarea>
+
+					<label for="rating">Rating:</label>
+					<select name="rating" id="rating" required>
+					<option value="">Choose</option>
+					<option value="1">★☆☆☆☆</option>
+					<option value="2">★★☆☆☆</option>
+					<option value="3">★★★☆☆</option>
+					<option value="4">★★★★☆</option>
+					<option value="5">★★★★★</option>
+					</select>
+
+					<button type="submit">Submit</button>
+				</form>
+
+				<!-- Lien vers page de connexion si pas connecté -->
+				<a href="add_review.html" class="details-button">Add a Review</a>
+			</section>
+		</main>
+
+		<script src="scripts.js"></script>
+
+		<footer>
+			<p>© 2025 All rights reserved</p>
+		</footer>
+	</body>
 </html>
