@@ -4,15 +4,21 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from hbnb.app.extensions import db
 from flask_cors import CORS
+from flask import render_template
+import os
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
-    app = Flask(__name__)
+    app = Flask(
+    __name__,
+    template_folder=os.path.abspath("templates"),
+    static_folder=os.path.abspath("static")
+    )
     app.config.from_object(config_class)
 
-    CORS(app, ressources={r"/api/*": {"origins": "*"}})
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
 
     bcrypt.init_app(app)
     jwt.init_app(app)
@@ -40,6 +46,7 @@ def create_app(config_class="config.DevelopmentConfig"):
         version='1.0',
         title='HBnB API',
         description='HBnB Application API',
+        doc='/api_docs',
         authorizations=authorizations,
         security='Bearer'
     )
@@ -51,4 +58,21 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(auth_ns, path='/api/v1/auth')
     api.add_namespace(protected_ns, path='/api/v1/protected')
 
+    @app.route('/index')
+    def index():
+        return render_template('index.html')
+
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+
+    @app.route('/place')
+    def place():
+        return render_template('place.html')
+
+    @app.route('/add_review')
+    def add_review():
+        return render_template('add_review.html')
+
     return app
+
