@@ -11,7 +11,8 @@
   <header>
     <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" alt="logo" />
     <nav>
-      <a href="{{ url_for('login') }}" class="login-button">Login</a>
+      <a href="{{ url_for('login') }}" class="login-button" id="login-link">Login</a>
+	  <a href="#" id="logout-link" style="display: none;">Logout</a>
     </nav>
   </header>
 
@@ -22,25 +23,12 @@
       <label for="price-filter">Max Price:</label>
       <select id="price-filter">
         <option value="all">All</option>
+		<option value="10">10</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
       </select>
     </section>
-
     <section id="places-list">
-      <div class="place-card">
-        <h3>Sunny Apartment</h3>
-        <p>Price: $230/night</p>
-        <a href="{{ url_for('place') }}" class="details-button">View Details</a>
-      </div>
-      <div class="place-card">
-        <h3>Cozy Cabin</h3>
-        <p>Price: $150/night</p>
-        <a href="{{ url_for('place') }}" class="details-button">View Details</a>
-      </div>
-      <div class="place-card">
-        <h3>Urban Loft</h3>
-        <p>Price: $180/night</p>
-        <a href="{{ url_for('place') }}" class="details-button">View Details</a>
-      </div>
     </section>
   </main>
 

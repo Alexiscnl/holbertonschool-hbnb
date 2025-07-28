@@ -1,21 +1,23 @@
-from flask import Flask
+from flask import Flask, render_template, redirect
 from flask_restx import Api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from hbnb.app.extensions import db
 from flask_cors import CORS
-from flask import render_template
 import os
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
     app = Flask(
-    __name__,
-    template_folder=os.path.abspath("templates"),
-    static_folder=os.path.abspath("static")
+        __name__,
+        template_folder=os.path.join(project_root, 'templates'),
+        static_folder=os.path.join(project_root, 'static')
     )
+
     app.config.from_object(config_class)
 
     CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
@@ -31,7 +33,26 @@ def create_app(config_class="config.DevelopmentConfig"):
     from hbnb.app.api.v1.auth import api as auth_ns
     from hbnb.app.api.v1.protected import api as protected_ns
 
-    # Simple API setup with Bearer token support for Swagger testing
+    @app.route('/')
+    def redirect_to_index():
+        return redirect('/index')
+
+    @app.route('/index')
+    def index():
+        return render_template('index.html')
+
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+
+    @app.route('/place')
+    def place():
+        return render_template('place.html')
+
+    @app.route('/add_review')
+    def add_review():
+        return render_template('add_review.html')
+
     authorizations = {
         'Bearer': {
             'type': 'apiKey',
@@ -58,21 +79,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(auth_ns, path='/api/v1/auth')
     api.add_namespace(protected_ns, path='/api/v1/protected')
 
-    @app.route('/index')
-    def index():
-        return render_template('index.html')
 
-    @app.route('/login')
-    def login():
-        return render_template('login.html')
-
-    @app.route('/place')
-    def place():
-        return render_template('place.html')
-
-    @app.route('/add_review')
-    def add_review():
-        return render_template('add_review.html')
 
     return app
 

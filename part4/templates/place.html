@@ -11,34 +11,27 @@
 	<header>
 		<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" alt="logo">
 		<nav>
+			<a href="{{ url_for('index') }}">Home</a>
 			<a href="{{ url_for('login') }}" class="login-button">Login</a>
 		</nav>
 	</header>
 
 	<main>
 		<section class="place-details">
-			<h2>Sunny Apartment</h2>
+			<h2 id="place-title">Chargement...</h2>
 			<div class="place-info">
-				<p><strong>Host:</strong> Joelle Montegu</p>
-				<p><strong>Description:</strong> A beautiful, sea view apartment</p>
-				<p><strong>Price:</strong> $230/night</p>
-				<p><strong>Amenities:</strong> Wifi, Air conditioning, Kitchen, Parking</p>
+				<p><strong>Description:</strong> <span id="place-description">...</span></p>
+				<p><strong>Price:</strong> <span id="place-price">...</span></p>
+				<p><strong>Host:</strong> <span id="place-host">...</span></p>
+				<div id="place-amenities"></div>
+
 			</div>
 		</section>
-
-		<section class="reviews">
-			<h3>Reviews</h3>
-			<div class="review-card">
-				<p><strong>Jane Smith:</strong></p>
-				<p>Amazing apartment, very clean</p>
-				<p>Rating: ★★★★☆</p>
-			</div>
-		</section>
-
-		<section class="add-review" id="add-review">
+		<div id="place-reviews"></div>
+		<!-- Le formulaire reste séparé -->
+		<section class="add-review" id="add-review" style="display: none;">
 			<h2>Add a Review</h2>
-
-			<form class="form">
+			<form class="form" id="review-form">
 				<label for="review-text">Your Review</label>
 				<textarea class="review-text" name="review-text" id="review-text" required></textarea>
 
@@ -54,8 +47,6 @@
 
 				<button type="submit">Submit</button>
 			</form>
-
-			<a href="{{ url_for('add_review') }}" class="details-button">Add a Review</a>
 		</section>
 	</main>
 
