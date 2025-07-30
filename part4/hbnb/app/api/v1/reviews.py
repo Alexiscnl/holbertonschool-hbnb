@@ -26,9 +26,7 @@ api = Namespace('reviews', description='Review operations')
 # Define the review model for input validation and documentation
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
-    'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id': fields.String(required=True, description='ID of the user'),
-    'place_id': fields.String(required=True, description='ID of the place')
+    'rating': fields.Integer(required=True, description='Rating of the place (1-5)')
 })
 
 
@@ -241,4 +239,74 @@ class PlaceReviewList(Resource):
                 for review in reviews
             ], 200
         except Exception as e:
+            return {'error': 'Internal server error'}, 500
+
+    @api.expect(review_model)
+    @api.response(201, 'Review successfully created')
+    @api.response(400, 'Invalid input data')
+    @api.doc(security='Bearer')
+    @jwt_required()
+    def post(self, place_id):
+        """Create a new review for a specific place."""
+        current_user_id = get_jwt_identity()
+
+        print(f"DEBUG: place_id = {place_id}")
+        print(f"DEBUG: current_user_id = {current_user_id}")
+        print(f"DEBUG: api.payload = {api.payload}")
+
+        try:
+            review_data = api.payload
+            review_data["place_id"] = place_id
+
+            print(f"DEBUG: review_data after adding place_id = {review_data}")
+
+            place = facade.get_place(place_id)
+            print(f"DEBUG: place found = {place is not None}")
+            if not place:
+                print("DEBUG: Place not found!")
+                return {"error": "Place not found"}, 404
+
+            print(
+                f"DEBUG: place.owner_id = {getattr(place, 'owner_id', 'NO_OWNER_ID')}")
+            print(f"DEBUG: current_user_id = {current_user_id}")
+            if place.owner_id == current_user_id:
+                print("DEBUG: Cannot review own place!")
+                return {"error": "You cannot review your own place."}, 400
+
+            existing_review = facade.get_review_by_user_and_place(
+                current_user_id, place_id)
+            print(f"DEBUG: existing_review = {existing_review is not None}")
+            if existing_review:
+                print("DEBUG: Already reviewed this place!")
+                return {"error": "You have already reviewed this place."}, 400
+
+            review_data["user_id"] = current_user_id
+            print(f"DEBUG: Final review_data = {review_data}")
+
+            # Validate rating range
+            if not (1 <= review_data['rating'] <= 5):
+                print("DEBUG: Invalid rating range!")
+                return {'error': 'Rating must be between 1 and 5'}, 400
+
+            print("DEBUG: About to create review...")
+            # Create the review using facade
+            new_review = facade.create_review(review_data)
+            print(f"DEBUG: Review created successfully!")
+
+            return {
+                'id': new_review.id,
+                'text': new_review.text,
+                'rating': new_review.rating,
+                'user_id': new_review.user.id,
+                'place_id': new_review.place.id,
+                'created_at': new_review.created_at.isoformat(),
+                'updated_at': new_review.updated_at.isoformat()
+            }, 201
+        except ValueError as e:
+            print(f"DEBUG: ValueError = {e}")
+            return {'error': str(e)}, 400
+        except Exception as e:
+            print(f"DEBUG: Exception = {e}")
+            import traceback
+            traceback.print_exc()
             return {'error': 'Internal server error'}, 500

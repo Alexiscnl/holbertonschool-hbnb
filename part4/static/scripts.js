@@ -53,20 +53,34 @@ function setupFilter() {
 	})
 }
 async function fetchPlaceDetails(token, placeId) {
-	const url = `http://127.0.0.1:5000/api/v1/places/${placeId}`;
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-		Authorization: `Bearer ${token}`
-		}
-	});
-	if (response.ok) {
-    	const place = await response.json();
-    	displayPlaceDetails(place);
-		}
-	else {
-		console.error("Erreur lors de la récupération du lieu :", response.status);
-	}
+    try {
+        // Récupérer les détails du place
+        const placeResponse = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (placeResponse.ok) {
+            const place = await placeResponse.json();
+            displayPlaceDetails(place);
+        }
+
+        // Récupérer les reviews du place
+        const reviewsResponse = await fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`, {
+            method: 'GET'
+            // Pas besoin d'Authorization pour GET
+        });
+
+        if (reviewsResponse.ok) {
+            const reviews = await reviewsResponse.json();
+            displayReviews(reviews);  // ← AJOUTEZ CETTE LIGNE !
+        }
+
+    } catch (error) {
+        console.error('Error fetching place details:', error);
+    }
 }
 async function fetchPlaces(token) {
 	try {
@@ -156,6 +170,32 @@ function displayPlaceDetails(place) {
     }
 }
 
+// Dans scripts.js, ajoutez cette fonction pour afficher les reviews :
+function displayReviews(reviews) {
+    const reviewsContainer = document.getElementById('place-reviews');
+    if (!reviewsContainer) return;
+
+    if (reviews.length === 0) {
+        reviewsContainer.innerHTML = '<p>No reviews yet.</p>';
+        return;
+    }
+
+    reviewsContainer.innerHTML = `
+        <h3>Reviews (${reviews.length})</h3>
+        <div class="reviews-list">
+            ${reviews.map(review => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+                        <span class="review-date">${new Date(review.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <p class="review-text">"${review.text}"</p>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const isLoggedIn = document.cookie.includes('token=');
     const currentPage = window.location.pathname;
@@ -173,6 +213,47 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addReviewSection) {
             addReviewSection.style.display = isLoggedIn ? 'block' : 'none';
         }
+
+        // Dans la section '/place', trouvez le formulaire et corrigez :
+        const reviewForm = document.getElementById('review-form');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                // CORRIGEZ CES LIGNES :
+                const review = document.getElementById('review-text').value;  // ← review-text au lieu de review
+                const rating = document.getElementById('rating').value;
+
+                if (!review || !rating) {
+                    alert("Please fill in all fields");
+                    return;
+                }
+
+                try {
+                    const reviewResponse = await fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({text: review, rating: parseInt(rating)}),
+                    })
+
+                    if (reviewResponse.ok) {
+                        alert('Review submitted successfully!');
+                        reviewForm.reset();
+                        // Rechargez la page actuelle au lieu de rediriger
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed to submit review');
+                    }
+                }
+                catch (error) {
+                    alert('Network error: ' + error.message);
+                }
+            });
+        }
     }
 
     // Gérer la page add_review
@@ -185,12 +266,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const token = getCookie("token");
         const placeId = getPlaceIdFromURL();
 
-        if (token && placeId) {
-            fetchPlaceDetails(token, placeId);
-        }
+		const reviewForm = document.getElementById('review-form')
+		if (reviewForm)
+			reviewForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const review = document.getElementById('review').value;
+			const rating = document.getElementById('rating').value;
+
+			if (!review || !rating) {
+				alert("Please fill in all fields");
+				return;
+			}
+
+			try{
+				const reviewResponse = await fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`
+					},
+					body: JSON.stringify({text: review, rating: parseInt(rating)}),
+				})
+
+				if (reviewResponse.ok) {
+					alert('Review submitted successfully!');
+					reviewForm.reset();
+					window.location.href = `/place?id=${placeId}`;
+				}
+				else {
+					alert('Failed to submit review');
+				}
+			}
+			catch (error) {
+				alert('Network error: ' + error.message);
+			}
+		})
     }
 
-    // Gestion du formulaire de login
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
 		loginForm.addEventListener('submit', async (event) => {
